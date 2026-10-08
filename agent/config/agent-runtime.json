@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "description": "software-gym Codex agent runtime policy. LoopController should read this file before spawning Codex CLI agents. Model name, base URL and API keys are NOT configured here; they are read from the repo-root .env (MODEL / BASE_URL / OPENAI_BASE_URL / API_KEY / OPENAI_API_KEY / MODEL_PROVIDER).",
+  "default_codex_config": {
+    "web_search": "disabled",
+    "sandbox": "workspace-write"
+  },
+  "agents": {
+    "FunctionDesigner": {
+      "web_search": "disabled",
+      "reason": "Designs from the requested software type and local prompt contract without hosted web search."
+    },
+    "IconDesigner": {
+      "web_search": "disabled",
+      "reason": "Infers the style-agnostic icon semantic superset from the local requirement document only."
+    },
+    "SubIconDesigner": {
+      "web_search": "disabled",
+      "reason": "Generates one style's SVG icon set from the shared superset and the local style visual system."
+    },
+    "StyleDesigner": {
+      "aliases": ["GUIDesigner", "GuiDesigner", "GuideDesigner"],
+      "web_search": "disabled",
+      "reason": "Designs from the local requirement document and style contract without hosted web search."
+    },
+    "SubStyleDesigner": {
+      "aliases": ["SubDesigner", "Subdesigner"],
+      "web_search": "disabled",
+      "reason": "Expands the local requirement and selected style into XAML blueprint without hosted web search."
+    },
+    "Coder": {
+      "web_search": "disabled",
+      "reason": "Should implement from the local requirement, selected style, blueprint, and prior eval evidence."
+    },
+    "DevCoder": {
+      "web_search": "disabled",
+      "reason": "Should review and fix the generated local code against the local spec and eval evidence."
+    },
+    "EvalTaskGenerateAgent": {
+      "web_search": "disabled",
+      "reason": "Should generate comparable GUI cases from the local requirement and feature_matrix only."
+    },
+    "GUIAgent": {
+      "web_search": "not_applicable",
+      "reason": "Runs through OSWorld GUI observations rather than Codex CLI web search."
+    }
+  },
+  "unsupported_web_search_behavior": {
+    "record_manifest_field": "<agent_snake_case>_web_search=unsupported",
+    "fallback": "Continue without web search, but keep the degraded mode visible in manifest and logs."
+  }
+}

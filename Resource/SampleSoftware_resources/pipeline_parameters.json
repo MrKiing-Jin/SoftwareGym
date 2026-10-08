@@ -1,0 +1,7 @@
+{
+  "software_type": "<SoftwareType>",
+  "default_style_count": 5,
+  "default_max_rounds": 3,
+  "product_positioning": "<Product positioning description: what users this software targets and what problems it solves; list core capabilities clearly - (1) file/data management (open, save, export, error handling); (2) view and canvas/main workspace behavior; (3) core editing/operation features; (4) organization management (layers/lists/projects/etc., depending on software type); (5) helper tools; (6) interaction system (menus, toolbar, context menu, shortcuts, theme and appearance settings, dialogs); (7) configuration and observability (local state persistence, logs). Mention which mature software experiences it aims to match in terms of mental model, without copying their UI/branding/copy; emphasize local-first, offline-capable. All user-visible copy must be in English/ASCII.>",
+  "eval_task_seedfile": "<Optional: the real asset seed directory name relative to this resource directory, e.g. pictures; only needed for media/file-based software; remove this field if not needed>"
+}

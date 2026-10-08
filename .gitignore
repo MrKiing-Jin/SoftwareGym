@@ -1,0 +1,25 @@
+# Local credentials and environment overrides
+.env
+.env.*
+!.env.example
+
+# Generated runs and VM runtime state
+/output/
+/docker/base/
+/docker/overlays/
+/docker/*.lock
+*.qcow2
+*.log
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
