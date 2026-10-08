@@ -9,6 +9,8 @@ Given a software type (e.g. `ChatAPP`, `PicEditor`), the pipeline:
 3. **Evaluate** — EvalTaskGenerateAgent creates GUI test cases; GUIEval boots OSWorld Docker containers (real Ubuntu VMs) and drives the app with a GUI agent (GPT-5.4-style computer-use or Seed), producing a per-round `summary.json`.
 4. **Iterate** — rounds v1 → v3: each repair round feeds the previous round's eval summary and review back to Coder/DevCoder for incremental fixes.
 
+**OSWorld environment alignment.** To align software synthesis and validation with downstream OSWorld evaluation, SoftwareGym uses the same Docker-based virtual-machine infrastructure and Ubuntu desktop environment as OSWorld. Generated applications are deployed into this shared runtime and tested through screenshots and PyAutoGUI actions. This keeps GUI interaction and execution conditions consistent with OSWorld evaluation, while the resulting test feedback drives SoftwareGym's iterative repair loop.
+
 The final deliverable of every run is `output/<run>/software_variants/<style>/loop/vN/coder/app` — the generated software package that gets evaluated.
 
 ## Package layout
