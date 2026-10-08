@@ -1,6 +1,6 @@
 # SoftwareGym
 
-SoftwareGym is a **software generation pipeline** that synthesizes a complete desktop application from a software-type description, then evaluates it in a real GUI environment.
+SoftwareGym is an **environment synthesis pipeline for computer-use agents (CUAs)**. It constructs interactive environments by synthesizing runnable software applications with diverse interfaces and executable functionality, and validates them through real GUI interactions.
 
 Given a software type (e.g. `ChatAPP`, `PicEditor`), the pipeline:
 
