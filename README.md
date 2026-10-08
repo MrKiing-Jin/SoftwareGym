@@ -1,6 +1,6 @@
-# software-gym-minimal
+# SoftwareGym
 
-A minimal, self-contained package of the **software generation pipeline** (pipeline 1 of software-gym): it synthesizes a complete desktop application from a software-type description, then evaluates it in a real GUI environment.
+SoftwareGym is a **software generation pipeline** that synthesizes a complete desktop application from a software-type description, then evaluates it in a real GUI environment.
 
 Given a software type (e.g. `ChatAPP`, `PicEditor`), the pipeline:
 
@@ -14,7 +14,7 @@ The final deliverable of every run is `output/<run>/software_variants/<style>/lo
 ## Package layout
 
 ```
-software-gym-minimal/
+SoftwareGym/
 ├── agent/                  # all pipeline code
 │   ├── loop_controller/    # cli.py (scaffold), runner.py (main loop), launcher.py,
 │   │                       # resume.py, manifest.py, validators.py,
