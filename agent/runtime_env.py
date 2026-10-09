@@ -21,6 +21,28 @@ def _truthy(value: str | None) -> bool:
     return (value or "").strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _parse_env_value(raw_value: str) -> str:
+    """Parse a simple dotenv value and discard unquoted trailing comments."""
+    value = raw_value.strip()
+    if not value:
+        return ""
+    if value[0] in {"\"", "'"}:
+        quote = value[0]
+        end = value.find(quote, 1)
+        if end >= 0:
+            return value[1:end]
+        return value[1:]
+    # In an unquoted value, a # preceded by whitespace starts a comment.
+    # Keep embedded hashes such as URL fragments (for example, token#part).
+    comment_at = next(
+        (index for index, char in enumerate(value) if char == "#" and index > 0 and value[index - 1].isspace()),
+        None,
+    )
+    if comment_at is not None:
+        value = value[:comment_at]
+    return value.rstrip()
+
+
 def load_env_file(path: Path | None = None, override: bool = False) -> Dict[str, str]:
     env_path = path or (REPO_ROOT / ".env")
     loaded: Dict[str, str] = {}
@@ -32,7 +54,7 @@ def load_env_file(path: Path | None = None, override: bool = False) -> Dict[str,
             continue
         key, value = line.split("=", 1)
         key = key.strip()
-        value = value.strip().strip('"').strip("'")
+        value = _parse_env_value(value)
         if not key:
             continue
         force_override = override or _truthy(os.environ.get("SOFTWAREGYM_ENV_OVERRIDE"))
@@ -43,11 +65,11 @@ def load_env_file(path: Path | None = None, override: bool = False) -> Dict[str,
 
 
 def softwaregym_python() -> str:
-    return os.environ.get("SOFTWAREGYM_PYTHON") or osworld_python()
-
-
-def osworld_python() -> str:
-    return os.environ.get("APPEVAL_PYTHON") or os.environ.get("OSWORLD_PYTHON") or "/opt/miniconda3/envs/osworld/bin/python"
+    return (
+        os.environ.get("SOFTWAREGYM_PYTHON")
+        or os.environ.get("APPEVAL_PYTHON")
+        or current_python()
+    )
 
 
 def current_python() -> str:
@@ -89,7 +111,7 @@ def env_for_softwaregym(base_env: MutableMapping[str, str] | None = None) -> Dic
 
 def env_for_osworld(base_env: MutableMapping[str, str] | None = None) -> Dict[str, str]:
     env = dict(base_env or os.environ)
-    python_path = Path(osworld_python()).absolute()
+    python_path = Path(softwaregym_python()).absolute()
     env_root = python_path.parent.parent
     env["CONDA_PREFIX"] = str(env_root)
     env["CONDA_DEFAULT_ENV"] = env_root.name
@@ -116,9 +138,9 @@ def activate_osworld_env_vars() -> None:
 
 def ensure_not_base_for_eval() -> None:
     executable = Path(sys.executable).resolve()
-    expected = Path(osworld_python()).resolve()
+    expected = Path(softwaregym_python()).resolve()
     if executable != expected:
-        raise RuntimeError(f"GUI eval must run with osworld python: expected {expected}, got {executable}")
+        raise RuntimeError(f"GUI eval must run with softwaregym python: expected {expected}, got {executable}")
 
 
 def ensure_softwaregym_for_runner() -> None:
@@ -137,6 +159,5 @@ __all__ = [
     "ensure_not_base_for_eval",
     "ensure_softwaregym_for_runner",
     "load_env_file",
-    "osworld_python",
-    "softwaregym_python",
+        "softwaregym_python",
 ]

@@ -4,6 +4,7 @@
 !.env.example
 
 # Generated runs and VM runtime state
+logs/
 /output/
 /docker/base/
 /docker/overlays/
@@ -17,9 +18,3 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
-
-# Editor and OS files
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db

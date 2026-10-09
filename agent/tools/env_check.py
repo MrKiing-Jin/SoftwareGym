@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from agent.docker.worker_manager import DEFAULT_BASE_IMAGE, iter_port_groups, port_group_free
-from agent.runtime_env import env_for_osworld, env_for_softwaregym, load_env_file, osworld_python, softwaregym_python
+from agent.runtime_env import env_for_osworld, env_for_softwaregym, load_env_file, softwaregym_python
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -72,7 +72,7 @@ def run_check(base_image: Path = DEFAULT_BASE_IMAGE) -> Dict[str, object]:
     }
     python_envs = [
         check_python_env("softwaregym", softwaregym_python(), env=env_for_softwaregym(os.environ)),
-        check_python_env("osworld", osworld_python(), require_openai_responses=True, env=env_for_osworld(os.environ)),
+        check_python_env("softwaregym-eval", softwaregym_python(), require_openai_responses=True, env=env_for_osworld(os.environ)),
     ]
     return {
         "commands": commands,

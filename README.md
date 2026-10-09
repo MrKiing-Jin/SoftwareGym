@@ -42,10 +42,10 @@ SoftwareGym/
 │                           # (OSWorld VM base image, ~35 GB, NOT included in this package)
 ├── docker/overlays/        # runtime VM overlays land here (empty)
 ├── .env.example            # annotated template (placeholders, no secrets); copy to .env
-└── requirements.txt        # pinned pip requirements for the osworld conda env
+└── requirements.txt        # pinned pip requirements for the softwaregym conda environment
 ```
 
-`output/` (run outputs and `_pipeline_logs/`) and `.env` (the single source for model URL / model name / API keys) are created at setup/runtime and are not part of the checked-in tree.
+`output/` (run outputs) and `logs/` (launcher and request logs) and `.env` (the single source for model URL / model name / API keys) are created at setup/runtime and are not part of the checked-in tree.
 
 ## Prerequisites (NOT included in this package)
 
@@ -54,10 +54,10 @@ SoftwareGym/
      ```bash
      npm install -g @openai/codex@0.156.1
      ```
-2. **The osworld conda environment** (`/opt/miniconda3/envs/osworld/bin/python`): both the orchestration side (scaffold/runner) and GUIEval use this interpreter; the pipeline enforces it at startup. Create it from the pinned `requirements.txt` in this package:
+2. **The `softwaregym` Conda environment**: both the orchestration side (scaffold/runner) and GUIEval use this Python environment; the pipeline enforces it at startup. Create it from the pinned `requirements.txt` in this package:
    ```bash
-   conda create -n osworld python=3.10.0
-   conda activate osworld
+   conda create -n softwaregym python=3.10.0
+   conda activate softwaregym
    pip install -r requirements.txt
    ```
 3. **.NET 8 SDK** (pinned to **8.0.422**): the Coder/DevCoder stages build the generated app (.NET 8 + Avalonia 11, `net8.0` target). The pipeline locates `dotnet` in this order (`avalonia_blueprint.py`): PATH → `SOFTWAREGYM_DOTNET` env var → `~/.local/dotnet8/dotnet` (portable) → `/tmp/dotnet8/dotnet`. Either install it system-wide:
@@ -69,7 +69,7 @@ SoftwareGym/
    curl -sSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh
    bash dotnet-install.sh --channel 8.0 --install-dir ~/.local/dotnet8
    ```
-4. **A model endpoint**: any OpenAI-compatible endpoint works — set `BASE_URL`/`OPENAI_BASE_URL`/keys in `.env` accordingly.
+4. **A Responses API model endpoint**: the Codex design/coding stages are configured with `wire_api="responses"` and call the OpenAI Responses API (`/responses`), so the endpoint must support that API shape, including `previous_response_id` for multi-turn sessions. The default GUI agent (`APPEVAL_AGENT_IMPL=gpt54`) also uses the Responses API with the `computer` tool for computer-use interaction, so its model endpoint must support computer-use requests and responses. Configure `BASE_URL`/`OPENAI_BASE_URL`, model names, provider, and API keys in `.env`; a generic Chat Completions-only endpoint is insufficient. If using `APPEVAL_AGENT_IMPL=seed`, configure the Seed executor/judge endpoint settings instead and verify that endpoint supports the Seed request format.
 5. **Disk**: peak concurrent qcow2 overlays ≈ `parallel-workers × eval-window` (1–4 GB each); check free space on the package's disk before large runs.
 6. **Host sysctl**: `fs.inotify.max_user_instances=1024` or higher (the default 128 can silently break VM networking under parallel GUIEval).
 
@@ -99,7 +99,8 @@ Add your software type first: copy `Resource/SampleSoftware_resources/` to `Reso
 All commands run from the package root with:
 
 ```bash
-PY=/opt/miniconda3/envs/osworld/bin/python
+conda activate softwaregym
+PY=$(command -v python)
 ```
 
 **Step 1 — scaffold** (creates directories and renders prompts only; no API calls):
@@ -119,9 +120,9 @@ RUN_DIR=$("$PY" -m agent.loop_controller.cli scaffold \
 
 ```bash
 STAMP=$(date +%Y%m%d_%H%M%S)
-mkdir -p output/_pipeline_logs
-LOG=output/_pipeline_logs/${SOFTWARE_TYPE}_${STAMP}.log
-PIDFILE=output/_pipeline_logs/${SOFTWARE_TYPE}_${STAMP}.pid
+LOG=logs/${SOFTWARE_TYPE}_${STAMP}.log
+PIDFILE=logs/${SOFTWARE_TYPE}_${STAMP}.pid
+mkdir -p logs
 
 env -u HTTP_PROXY -u HTTPS_PROXY -u ALL_PROXY \
     -u http_proxy -u https_proxy -u all_proxy \

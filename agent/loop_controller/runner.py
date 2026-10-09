@@ -30,7 +30,7 @@ from agent.runtime_env import (
     env_for_osworld,
     env_for_softwaregym,
     load_env_file,
-    osworld_python,
+    softwaregym_python,
 )
 
 
@@ -883,7 +883,7 @@ class PipelineRunner:
             return summary_path
 
         command = [
-            osworld_python(),
+            softwaregym_python(),
             "-m",
             "agent.eval.run_eval",
             "--variant-dir",
@@ -1012,7 +1012,7 @@ class PipelineRunner:
         smoke_dir = variant_dir / "loop" / version / "launch_smoke"
         smoke_dir.mkdir(parents=True, exist_ok=True)
         command = [
-            osworld_python(),
+            softwaregym_python(),
             "-m",
             "agent.eval.run_eval",
             "--variant-dir",
@@ -1915,7 +1915,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         style_diversity_mode=args.style_diversity_mode,
         visual_fidelity_threshold=args.visual_fidelity_threshold,
         launch_smoke_enabled=not args.no_launch_smoke_gate,
-        launch_smoke_max_repairs=args.launch_smoke_max_repaairs,
+        launch_smoke_max_repairs=args.launch_smoke_max_repairs,
         launch_smoke_infra_retries=args.launch_smoke_infra_retries,
     )
     try:

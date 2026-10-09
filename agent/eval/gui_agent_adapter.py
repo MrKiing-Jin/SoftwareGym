@@ -942,7 +942,7 @@ class SeedAgentBridge:
         self.request_log_path = Path(
             os.environ.get(
                 "SEED_REQUEST_LOG",
-                str(REPO_ROOT / "output" / "_pipeline_logs" / "seed_request_events.jsonl"),
+                str(REPO_ROOT / "logs" / "seed_request_events.jsonl"),
             )
         )
         shared_image_size = _shared_gui_image_size()
@@ -1001,7 +1001,7 @@ class SeedAgentBridge:
         configured = getattr(
             self,
             "request_log_path",
-            REPO_ROOT / "output" / "_pipeline_logs" / "seed_request_events.jsonl",
+            REPO_ROOT / "logs" / "seed_request_events.jsonl",
         )
         suffix = configured.suffix or ".jsonl"
         stem = configured.stem if configured.suffix else configured.name

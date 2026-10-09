@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reclaim leaked anonymous OSWorld VM volumes every 30 minutes (only delete dangling anonymous volumes; named/in-use volumes are left untouched).
-PY=${SOFTWAREGYM_PYTHON:-/opt/miniconda3/envs/osworld/bin/python}
+PY=${SOFTWAREGYM_PYTHON:-$(command -v python)}
 cd "$(dirname "$(readlink -f "$0")")/../.."
 while true; do
   echo "===== $(date '+%F %T') prune ====="

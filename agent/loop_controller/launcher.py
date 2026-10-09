@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
 
-from agent.runtime_env import env_for_osworld, osworld_python
+from agent.runtime_env import env_for_osworld, softwaregym_python
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -61,7 +61,7 @@ def launch_eval(
     pid_path = daemon_dir / "eval.pid"
     restart_env_path = daemon_dir / "restart.env"
     command = [
-        osworld_python(),
+        softwaregym_python(),
         "-m",
         "agent.eval.run_eval",
         "--variant-dir",
