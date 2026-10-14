@@ -161,3 +161,19 @@ echo $! > "$PIDFILE"
 - **Seed-material evaluation**: if `pipeline_parameters.json` sets `eval_task_seedfile` (media/file-type software), put the real seed files into `Resource/<YourType>_resources/<seed-dir>/` yourself — this package ships no sample assets.
 - **Container/overlay cleanup**: the runner does not reap finished OSWorld containers by itself. For large runs, run `agent/tools/volume_cleanup_loop.sh` (or an equivalent reaper) alongside, and `docker volume prune -f` afterwards.
 - This package is self-contained for its own code, but relies on the host's conda environment, model endpoint, Docker daemon, the OSWorld VM base image (`docker/base/Ubuntu_osworld_minimal.qcow2`, not included), and .NET 8 SDK (`dotnet` on PATH or the portable fallback locations checked by `avalonia_blueprint.py`).
+
+## Citation
+
+If you find SoftwareGym useful in your research, please consider citing our work. Our paper is available on [arXiv](https://arxiv.org/abs/2610.12611).
+
+```bibtex
+@misc{jin2026softwaregymscalingcomputeruseagent,
+      title={SoftwareGym: Scaling Computer-Use Agent Training with Diverse Synthesized Software Environments},
+      author={Tian Jin and Wenhao Wang and Jing Kang and Haoting Shi and Rui Ye and Yijun Lu and Siheng Chen},
+      year={2026},
+      eprint={2610.12611},
+      archivePrefix={arXiv},
+      primaryClass={cs.MA},
+      url={https://arxiv.org/abs/2610.12611},
+}
+```
