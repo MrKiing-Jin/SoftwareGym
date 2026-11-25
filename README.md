@@ -1,4 +1,10 @@
 # SoftwareGym
+## News
+<img width="2416" height="1001" alt="img_v3_0217o_6c2bf3d3-be76-4dc5-b3ec-5cd1cb9a45dg" src="https://github.com/user-attachments/assets/60550214-7064-4c4d-812f-91c70b0dd98e" />
+📢 Our paper was voted #1 on Hugging Face Daily Papers!
+
+
+## Introduction
 
 SoftwareGym is an **environment synthesis pipeline for computer-use agents (CUAs)**. It constructs interactive environments by synthesizing runnable software applications with diverse interfaces and executable functionality, and validates them through real GUI interactions.
 
